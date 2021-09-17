@@ -1,39 +1,40 @@
 package Sistema;
 
 import java.util.Scanner;
+import java.io.IOException;
 import java.util.InputMismatchException;
 
 public class MainMenu {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException{
 		// TODO Auto-generated method stub
-		int campos, i , j;
+		int campos, i , j, opcion, totalAlumnos;
 		String datos[][];
-		String op;
-		int totalalumnos;
-		totalalumnos = 19;
+		String nombreUsuario= "";
+		boolean salir = false;
+		Scanner sn = new Scanner(System.in);
+		
+		totalAlumnos = 19;
 		campos = 12;
 		datos = new String[20][13];
-		for (i=0;i<=totalalumnos;i++) {
+		
+		
+		for (i=0;i<=totalAlumnos;i++) {
 			for (j=0;j<=campos;j++) {
 				datos[i][j] = "";
 			}
 		}
 		
-		Scanner sn = new Scanner(System.in);
-		boolean salir = false;
-		int opcion;
-		String nombreUsuario= "";
-		
 		System.out.println("BIENVENIDO A SISTEMA DE REGISTRO DE ALUMNOS");
-		Thread.sleep(1*1000);
+		//Thread.sleep(1*1000);
 		System.out.println("");
 		
+		/*
 		System.out.println("Ingrese su nombre:");
 		nombreUsuario = sn.nextLine();
 		System.out.println("");
 		Thread.sleep(1*1000);
-		
+		*/
 		
 		while (!salir) {
 			
@@ -53,12 +54,11 @@ public class MainMenu {
 			switch(opcion) {
 			
 			    case 1:
-			    	System.out.println("este es el menu de NUEVO");
 			    	ingresarAlumno(datos);
 				    break;
 				 
                 case 2:
-                	System.out.println("este es el menu de BUSCAR");
+                	buscarAlumno(nombreUsuario);
     				break;
     			
                 case 3:
@@ -94,9 +94,10 @@ public class MainMenu {
 		respuesta = "0";
 		n = 0;
 		do {
-			System.out.println("Presione 1 para ingresar un nuevo alumno");
+			System.out.println();
+			System.out.println("1.- Ingresar nuevo alumno");
 			// captura opcion
-			System.out.println("Presione 2 para volver a menú principal");
+			System.out.println("2.- Volver al menu principal");
 			Scanner s = new Scanner(System.in);
 			respuesta = s.nextLine();
 			if ( esNumero(respuesta)==false) {
@@ -108,7 +109,7 @@ public class MainMenu {
 				}
 			}
 			if (n==2) {
-				System.out.println(""); // no hay forma directa de borrar la consola en Java
+				System.out.println(""); 
 			}
 		} while (n!=2);
 	}
@@ -126,8 +127,9 @@ public class MainMenu {
 		String dato;
 		boolean datoverificador = false, verificador = false;
 		int i = -1, j = 0;
-		
 		Scanner s = new Scanner(System.in);
+		
+		System.out.println("Recuerda que si te equivocas puedes editar el alumno o elimininarlo");
 		
 		while ((verificador==false && i<20)) {
 			i = i+1;
@@ -137,17 +139,11 @@ public class MainMenu {
 					switch (j) {
 						case 0:
 							while ((datoverificador==false)) {
-								System.out.println("Ingrese rut de alumno ingresado o cancelar ingresando 0: ");
+								System.out.println("Ingrese rut de alumno");
 								dato = s.nextLine();
 								datoverificador = validarRut(dato);
 								if (datoverificador) {
 									datos[i][j] = dato;
-								}
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
 								}
 							}
 							break;
@@ -164,12 +160,6 @@ public class MainMenu {
 									System.out.println("");
 								}
 								
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
-								}
 							}
 							break;
 						case 2:
@@ -182,12 +172,6 @@ public class MainMenu {
 								} else {
 									System.out.println("El apellido ingresado es incorrecto, no puede tener numeros ni caracteres extraños.");
 									System.out.println("");
-								}
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
 								}
 							}
 							break;
@@ -202,12 +186,6 @@ public class MainMenu {
 									System.out.println("El apellido ingresado es incorrecto, no puede tener numeros ni caracteres extraños.");
 									System.out.println("");
 								}
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
-								}
 							}
 							break;
 						case 4:
@@ -221,12 +199,6 @@ public class MainMenu {
 									System.out.println("El numero ingresado es incorrecto, no puede tener letras ni caracteres extraños y debe tener 9 digitos.");
 									System.out.println("");
 								}
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
-								}
 							}
 							break;
 						case 5:
@@ -239,12 +211,6 @@ public class MainMenu {
 								} else {
 									System.out.println("El correo ingresado es incorrecto");
 									System.out.println("");
-								}
-								if (esNumero(dato)) {
-									if (Integer.parseInt(dato)==0) {
-										datoverificador = true;
-										verificador = true;
-									}
 								}
 							}
 							break;
@@ -263,8 +229,68 @@ public class MainMenu {
 		}
 		//mostrardatos(datos,i);
 	}
+	
+	public static void buscarAlumno(String datos){
+		int n;
+		String respuesta;
+		Scanner s = new Scanner(System.in);
+		n = 0;
+		respuesta = "0";
+		do {
+			System.out.println("");
+			System.out.println("1. Buscar Alumno Por Rut");
+			System.out.println("");
+			System.out.println("2. Buscar Alumno Por Nombre");
+			System.out.println("");
+			System.out.println("3. Mostrar lista de alumnos");
+			System.out.println("");
+			System.out.println("4. Ingresa 4 para volver a menú principal");
+			System.out.println("");
+			System.out.print("Elige una opción.....");
+			respuesta = s.nextLine();
+			if ((esNumero(respuesta)==false)) {
+				System.out.println("");
+				System.out.println("La respuesta ingresada es incorrecta por favor vuelve a intentarlo");
+				System.out.println("");
+			} else {
+				n = Integer.parseInt(respuesta);
+			}
+			switch (n) {
+			case 1:
+				buscarporRut(datos);
+				break;
+			case 2:
+				buscarporNombre(datos);
+				break;
+			case 3:
+				listarAlumnos(datos);
+				break;
+			case 4:
+				System.out.println("");
+				break;
+			}
+		} while (n!=4);
+	}
+	
+	private static void listarAlumnos(String datos) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
+	private static void buscarporNombre(String datos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void buscarporRut(String datos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	// Validaciones
 	private static boolean validarRut(String dato) {
 		// TODO Auto-generated method stub
 		return true;
