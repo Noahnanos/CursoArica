@@ -364,7 +364,7 @@ public class MainMenu {
 				editarAlumno(datos, alumno);
 				break;
 			case 2:
-				System.out.println("Ingresar notas");
+				ingresarNotas(datos);
 				break;
 			case 3:
 				System.out.println("Reporte");
@@ -534,6 +534,91 @@ public class MainMenu {
 		} while(n!=8);
 		
 	}
+	
+	public static void ingresarNotas(String datos[][]) {
+  		double acumuladoColumnas;
+  		int alumno;
+  		int j;
+  		int n;
+  		String nuevaNota;
+  		String respuesta;
+  		String respuestaNN;
+  		acumuladoColumnas = 0;
+  		alumno = 0;
+  		respuesta = "0";
+  		n = 0;
+  		nuevaNota = "0";
+  		j = 7;
+  		respuestaNN = "S";
+  		Scanner snn = new Scanner(System.in);
+  		boolean otraNota = false;
+  		
+  		do {
+  			System.out.println("Presione 1 para ingresar nueva nota ");
+  			// captura opcion
+  			System.out.println("Presione 2 para volver a menú principal");
+  			System.out.println("Presione 3 para obtener Promedio de notas del alumno");
+  			respuesta = snn.nextLine();
+  			
+  			if ((esNumero(respuesta)==false)) {
+  				System.out.println("La respuesta ingresada es incorrecta");
+  			} else {
+  				n = Integer.parseInt(respuesta);
+  				if (n==1) {
+  					// creaR LA FUNCI
+  					// Mientras j <= 12 & respuestaNN = "S" Hacer
+  					//System.out.println("mensaje de j "+j+"respuesta nn "+respuestaNN);
+  					for (j=7;j<=12;j++) {
+  							if(j == 12) {
+  								otraNota = true;
+  							}
+  							if (datos[alumno][j].equals("")) {
+  								//for contador1 = 0 ; contador1=6 ; contador1 ++ {
+  								//	contadorNN = contador1; 
+  							
+  							System.out.println("Ingresa la nueva nota" );
+  							nuevaNota = snn.nextLine();
+  							
+  							if(esNumero(nuevaNota) == false) {
+  								System.out.println("La respuesta ingresada es incorrecta");
+  								
+  							}else {
+  								datos[alumno][j] = nuevaNota;
+  	  							System.out.println("¿Quieres ingresar nueva nota? (Ingresa S para continuar o N para salir)  ");
+  	  							respuestaNN = snn.nextLine();
+  	  							if (!respuestaNN.toUpperCase().equals("S")) {
+  	  								j = 13;
+  	  							}
+  							}
+  							
+  						}
+  					}
+  					if (otraNota) {
+						System.out.println("El Alumno ha excedido cantidad de notas permitidas");
+					}
+  					//j = 7;
+  					// j<- j+1;
+  					// FinMientras
+  				}
+  				if (n==3) {
+  					if (j==13) {
+  						 
+  							for (j=7;j<=12;j++) {
+  								System.out.println ("algo me tiene que llegar" + datos[alumno][j]);
+  								acumuladoColumnas = acumuladoColumnas+ Double.parseDouble(datos[alumno][j]);
+  							}
+  						
+  						System.out.println("El Promedio es ; "+acumuladoColumnas/6);
+  					} else {
+  						System.out.println("El alumno no tiene las notas suficientes para obtener su promedio");
+  					}
+  				}
+  			}
+  			if (n==2) {
+  				System.out.println(""); 
+  			}
+  		} while (n!=2);
+  	}
 
 
 	private static void mostrarDatos(String[][] datos, int i) {
