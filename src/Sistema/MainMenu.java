@@ -38,6 +38,7 @@ public class MainMenu {
 		
 		while (!salir) {
 			System.out.println("************************************************");
+			System.out.println("MENU PRINCIPAL");
 			System.out.println("");
 			System.out.println("1.- NUEVO ALUMNO");
 			System.out.println("2.- BUSCAR ALUMNO");
@@ -537,10 +538,16 @@ public class MainMenu {
 
 	private static void mostrarDatos(String[][] datos, int i) {
 		// TODO Auto-generated method stub
-		System.out.println("datos del alumno");
-		System.out.println(datos[i][0]);
-		System.out.println(datos[i][1]);
-		System.out.println(datos[i][2]);
+		System.out.println("Datos del Alumno");
+		System.out.println("");
+		System.out.println("Rut: "+datos[i][0]);
+		System.out.println("Nombre: "+datos[i][1]);
+		System.out.println("Apellido Paterno: "+datos[i][2]);
+		System.out.println("Apellido Materno: "+datos[i][3]);
+		System.out.println("Número de Contacto: "+datos[i][4]);
+		System.out.println("Correo: "+datos[i][5]);
+		System.out.println("Fecha de Nac: "+datos[i][6]);
+		System.out.println("");
 	}
 
 
@@ -685,21 +692,103 @@ public class MainMenu {
 		return variableRetorno;
 	}
 
-	private static boolean validarCelular(String dato) {
+	private static boolean validarCelular(String num) {
 		// TODO Auto-generated method stub
-		return true;
+		int cont;
+		String digitos;
+		boolean esvalido;
+		int i;
+		int j;
+		
+		boolean retorno;
+		digitos = "0123456789";
+		esvalido = true;
+		i = 0;
+		cont = 0;
+		while ((esvalido==true && i<digitos.length())) {
+			for (j=0;j<=num.length()-1;j++) {
+				if (num.substring(j,j+1).equals(digitos.substring(i,i+1))) {
+					cont = cont+1;
+				}
+			}
+			i = i+1;
+		}
+		if ((cont!=num.length() || !num.substring(0,1).equals("9")|num.length()!=9)) {
+			
+			esvalido = false;
+		}
+		retorno = esvalido;
+		return retorno;
 	}
 
 
-	private static boolean verificarEmail(String dato) {
+	private static boolean verificarEmail(String email) {
 		// TODO Auto-generated method stub
-		return true;
+		int arrobas;
+		int cont;
+		String cortado;
+		boolean esvalido;
+		int i;
+		
+		boolean retorno;
+		cortado = "";
+		arrobas = 0;
+		cont = 0;
+		esvalido = false;
+		for (i=0;i<=email.length()-1;i++) {
+			if (email.substring(i,i+1).equals("@")) {
+				esvalido = true;
+				arrobas = arrobas+1;
+				cortado = email.substring(i+1,email.length());
+				
+			}
+		}
+		if (arrobas>1) {
+			esvalido = false;
+		} else {
+			for (i=0;i<=cortado.length()-1;i++) {
+				if ((cortado.substring(i,i+1).equals("."))) {
+					cont = cortado.substring(0,i).length();
+					cortado = cortado.substring(i+1,cortado.length()).toLowerCase();
+				}
+			}
+		}
+		if ((cortado.equals("com") || cortado.equals("cl") && cont>2)) {
+			esvalido = true;
+		} else {
+			esvalido = false;
+		}
+		retorno = esvalido;
+		return retorno;
 	}
 
 
-	private static boolean validarPalabra(String lowerCase) {
+	private static boolean validarPalabra(String palabra) {
 		// TODO Auto-generated method stub
-		return true;
+		String consonantes;
+		int cont;
+		boolean existe;
+		int i;
+		int j;
+	
+		boolean retorno;
+		existe = true;
+		i = 0;
+		cont = 0;
+		consonantes = "abcdefghijklmnñopqrstuvwxyz";
+		while ((existe==true && i<consonantes.length())) {
+			for (j=0;j<=palabra.length()-1;j++) {
+				if ((palabra.substring(j,j+1).equals(consonantes.substring(i,i+1)))) {
+					cont = cont+1;
+				}
+			}
+			i = i+1;
+		}
+		if ((palabra.length()!=cont)) {
+			existe = false;
+		}
+		retorno = existe;
+		return retorno;
 	}
 	
 	
