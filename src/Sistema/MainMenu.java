@@ -602,11 +602,9 @@ public class MainMenu {
   				}
   				if (n==3) {
   					if (j==13) {
-  						 
-  							for (j=7;j<=12;j++) {
-  								System.out.println ("algo me tiene que llegar" + datos[alumno][j]);
-  								acumuladoColumnas = acumuladoColumnas+ Double.parseDouble(datos[alumno][j]);
-  							}
+  						for (j=7;j<=12;j++) {
+  							acumuladoColumnas = acumuladoColumnas+ Double.parseDouble(datos[alumno][j]);
+  						}
   						
   						System.out.println("El Promedio es ; "+acumuladoColumnas/6);
   					} else {
