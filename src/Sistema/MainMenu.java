@@ -69,7 +69,7 @@ public class MainMenu {
     				break;
                 
                 case 4:
-                	System.out.println("este es el menu de ELIMINAR");
+                	eliminarAlumnoRut(datos);
     				break;	
                 case 5:
                 	salir = true;
@@ -88,8 +88,7 @@ public class MainMenu {
 	}
 	System.out.println("Hasta Pronto " +nombreUsuario + " !");
 		
-	}
-	
+	}	
 	
 	public static void ingresarAlumno(String datos[][]){
 		int n;
@@ -115,15 +114,6 @@ public class MainMenu {
 				System.out.println(""); 
 			}
 		} while (n!=2);
-	}
-	
-	public static boolean esNumero(String cadena){
-		try {
-			Integer.parseInt(cadena);
-			return true;
-		} catch (NumberFormatException nfe){
-			return false;
-		}
 	}
 	
 	public static void ingresarDatos(String datos[][]) {
@@ -305,6 +295,40 @@ public class MainMenu {
 			opcionesAlumno(datos, alumno);
 		}
 	}
+	
+	public static void eliminarAlumnoRut(String datos[][]){
+		boolean existe = false;
+		int i, j;
+		String respuesta = "-1";
+		Scanner s = new Scanner(System.in);
+		
+		do {
+			System.out.println("Ingrese el rut del alumno que desea eliminar para volver presione 0: ");
+			respuesta = s.nextLine();
+			
+			for (i=0;i<=19;i++) {
+				if (respuesta.equals(datos[i][0])) {
+					for (j=0;j<=12;j++) {
+						datos[i][j] = "";
+						existe = true;
+					}
+					System.out.println("-------------------------------------------------");
+					System.out.println("El alumno se elimino correctamentamente");
+					System.out.println("-------------------------------------------------");
+				}
+			}
+				
+			if (existe==false) {
+				System.out.println("-------------------------------------------------");
+				System.out.println("El rut ingresado no esta registrado en el sistema");
+				System.out.println("-------------------------------------------------");
+			}
+			if (respuesta.equals("0")) {
+				System.out.println(""); 
+			}
+		} while (!respuesta.equals("0") && !existe);
+	
+	}
 
 
 	private static void opcionesAlumno(String[][] datos, int alumno) {
@@ -345,7 +369,7 @@ public class MainMenu {
 				System.out.println("Reporte");
 				break;
 			case 4:
-				System.out.println("Eliminar");
+				eliminarAlumno(datos, alumno);
 				break;
 			case 5:
 				System.out.println("");
@@ -354,6 +378,41 @@ public class MainMenu {
 		} while (n!=5);
 	}
 	
+	public static void eliminarAlumno(String datos[][],int alumno) {
+		int n = 0, i , j;
+		String respuesta="0";
+		
+		Scanner s = new Scanner(System.in);
+		System.out.println("************************************************");
+		System.out.println("");
+		System.out.println("¿Seguro que desea eliminar el alumno?");
+		System.out.println("");
+		do {
+			System.out.println("************************************************");
+			System.out.println("1. SI");
+			System.out.println("2. NO");
+			System.out.print("Elige una opción.....");
+			respuesta = s.nextLine();
+			if ((esNumero(respuesta)==false)) {
+				System.out.println("");
+				System.out.println("La respuesta ingresada es incorrecta por favor vuelve a intentarlo");
+				System.out.println("");
+			} else {
+				n = Integer.parseInt(respuesta);
+			}
+			if(n==1) {
+				for (j=0;j<=12;j++) {
+					datos[alumno][j] = "";
+				}
+				System.out.println("-------------------------------------------------");
+				System.out.println("El alumno se elimino correctamentamente");
+				System.out.println("-------------------------------------------------");
+				n = 2;
+			}
+		} while (n!=2);
+		
+	}
+
 	public static void editarAlumno(String[][] datos, int alumno) {
 		String respuesta="0", dato;
 		int n = 0;
@@ -486,6 +545,15 @@ public class MainMenu {
 
 
 	// Validaciones
+	public static boolean esNumero(String cadena){
+		try {
+			Integer.parseInt(cadena);
+			return true;
+		} catch (NumberFormatException nfe){
+			return false;
+		}
+	}
+	
 	private static boolean validarRut(String rut) {
 		// TODO Auto-generated method stub
 		boolean banderaFormatoCuerpo,banderaFormatoDv,banderaInDv, retorno ;
