@@ -481,15 +481,141 @@ public class MainMenu {
 		System.out.println("datos del alumno");
 		System.out.println(datos[i][0]);
 		System.out.println(datos[i][1]);
+		System.out.println(datos[i][2]);
 	}
 
 
 	// Validaciones
-	private static boolean validarRut(String dato) {
+	private static boolean validarRut(String rut) {
 		// TODO Auto-generated method stub
-		return true;
+		boolean banderaFormatoCuerpo,banderaFormatoDv,banderaInDv, retorno ;
+		int contadorEsNumero,contadorPara,contadorInDv;
+		
+		String cuerpo, cuerpoNumero, dv, numeroR, restoAux, subRut;
+	
+		int multiplicador, multiplicar, numer, restaResto, resto;
+	
+		int sumaMultiplicacion,variableParaMultiplicacion, variableParaValidar;
+	
+		// Declaracion de variables
+		// Variables globales
+		banderaInDv = false;
+		banderaFormatoDv = false;
+		banderaFormatoCuerpo = true;
+		dv = "";
+		cuerpo = "";
+		cuerpoNumero = "";
+		contadorInDv = -1;
+		
+		for (contadorPara=0;contadorPara<=rut.length()-1;contadorPara++) {
+			subRut = rut.substring(contadorPara,contadorPara+1);
+			if ((subRut.equals("-") || banderaInDv==true)) {
+				contadorInDv = contadorInDv+1;
+				banderaInDv = true;
+				if ((esdv(subRut)==true)) {
+					dv = dv.concat(subRut);
+				}
+			}
+			if ((banderaInDv==false)) {
+				if ((escuerpo(subRut)==true)) {
+					cuerpo = cuerpo.concat(subRut);
+				} else {
+					banderaFormatoCuerpo = false;
+				}
+			}
+		}
+		// Validacion Cuerpo
+		if (banderaFormatoCuerpo==true) {
+			contadorEsNumero = 0;
+			for (variableParaValidar=cuerpo.length()-1;variableParaValidar>=0;variableParaValidar--) {
+				numeroR = cuerpo.substring(variableParaValidar,variableParaValidar+1);
+				if ((esNumero(numeroR)==true)) {
+					contadorEsNumero = contadorEsNumero+1;
+					cuerpoNumero = cuerpoNumero.concat(numeroR);
+				} else {
+					contadorEsNumero = contadorEsNumero+1;
+					if (contadorEsNumero==4 && variableParaValidar>1) {
+						contadorEsNumero = 0;
+					} else {
+						banderaFormatoCuerpo = false;
+						variableParaValidar = 0;
+					}
+				}
+			}
+		} else {
+		}
+		// Validacion DV
+		if (contadorInDv==1 && !dv.equals("")) {
+			banderaFormatoDv = true;
+		}
+		if (banderaFormatoCuerpo==true && banderaFormatoDv==true) {
+			multiplicador = 2;
+			sumaMultiplicacion = 0;
+			resto = 0;
+			
+			for (variableParaMultiplicacion=0;variableParaMultiplicacion<=cuerpoNumero.length()-1;variableParaMultiplicacion++) {
+				
+				numer = Integer.parseInt(cuerpoNumero.substring(variableParaMultiplicacion,variableParaMultiplicacion+1));
+				
+				multiplicar = numer*multiplicador;
+				// El resultado de las multiplicaciones se suman
+				sumaMultiplicacion = sumaMultiplicacion+multiplicar;
+				multiplicador = multiplicador+1;
+				if (multiplicador>7) {
+					multiplicador = 2;
+				}
+			}
+			// Sacamos el resto de la suma, de la division en 11
+			resto = sumaMultiplicacion%11;
+			// Restar 11 al resultado del paso anterior (generar excepciones para 11 y 10)
+			restaResto = 11-resto;
+			switch (restaResto) {
+			case 10:
+				restoAux = "K";
+				break;
+			case 11:
+				restoAux = "0";
+				break;
+			default:
+				restoAux = Integer.toString(restaResto);
+			}
+			// Comparar el resultado del paso anterior con DV
+			if (dv.toUpperCase().equals(restoAux.toUpperCase())) {
+				System.out.println("RUT/RUN valido");
+				retorno = true;
+			} else {
+				System.out.println("RUT/RUN invalido");
+				retorno = false;
+				
+			}
+		} else {
+			System.out.println("RUT/RUN invalido");
+			retorno = false;
+		}
+		return retorno;
+		
+	}
+	
+	
+	public static boolean esdv(String letra) {
+		boolean variableRetorno;
+		if (letra.equals("0") || letra.equals("1") || letra.equals("2") || letra.equals("3") || letra.equals("4") || letra.equals("5") || letra.equals("6") || letra.equals("7") || letra.equals("8") || letra.equals("9") || letra.equals("K") || letra.equals("k")) {
+			variableRetorno = true;
+		} else {
+			variableRetorno = false;
+		}
+		return variableRetorno;
 	}
 
+	public static boolean escuerpo(String letra) {
+		boolean variableRetorno;
+		if (letra.equals("0") || letra.equals("1") || letra.equals("2") || letra.equals("3") || letra.equals("4") || letra.equals("5") || letra.equals("6") || letra.equals("7") || letra.equals("8") || letra.equals("9") || letra.equals(".")) {
+			variableRetorno = true;
+		} else {
+			variableRetorno = false;
+		}
+		return variableRetorno;
+	}
 
 	private static boolean validarCelular(String dato) {
 		// TODO Auto-generated method stub
